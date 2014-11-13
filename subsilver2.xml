@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http
+://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.2.xsd">
+  <header>
+    <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+    <title lang="en">Advanced warnings system for phpBB3 for Subsilver2</title>
+    <description lang="en">This mod changes built-in phpBB3 warnings system to the more advanced one.</description>
+    <author-group>
+      <author>
+        <realname></realname>
+        <email>rxu@mail.ru</email>
+        <username>rxu</username>
+        <homepage>http://phpbbguru.net</homepage>
+        <contributions />
+      </author>
+    </author-group>
+    <mod-version>0.9b</mod-version>
+    <installation>
+      <level>intermediate</level>
+      <time>300</time>
+      <target-version>3.0.4</target-version>
+    </installation>
+    <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
+		<link-group>
+			<link type="parent" href="Advanced_warnings_for_phpBB3_install.xml" lang="en">Main install file</link>
+		</link-group>
+  </header>
+  <action-group>
+    <open src="styles/subsilver2/template/mcp_warn_list.html">
+      <edit>
+        <find><![CDATA[	<td class="row3" colspan="4" align="center"><b class="gen">{L_WARNED_USERS}</b></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td class="row3" colspan="5" align="center"><b class="gen">{L_WARNINGS}</b></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<th>&nbsp;{L_WARNINGS}&nbsp;</th>
+	<th>&nbsp;{L_LATEST_WARNING_TIME}&nbsp;</th>]]></find>
+        <action type="replace-with"><![CDATA[	<th>&nbsp;{L_WARNING_TIME}&nbsp;</th>
+	<th>&nbsp;{L_WARNING_EXPIRES}&nbsp;</th>
+	<th>&nbsp;</th>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[		<td class="row2" width="15%" valign="top"><span class="gen"><a href="{user.U_NOTES}">{L_VIEW_NOTES}</a></span></td>]]></find>
+        <action type="replace-with"><![CDATA[		<td class="row2" width="15%" valign="top"><span class="gen"><!-- IF user.U_WARNING_POST_URL --><a href="{user.U_WARNING_POST_URL}">{L_WARNING_POST}</a><!-- ELSE -->&nbsp;<!-- ENDIF --></span></td>
+		<td class="row2" width="15%" valign="top"><span class="gen"><!-- IF user.WARNING_STATUS --><a href="{user.U_EDIT}">{L_EDIT_WARNING}</a><!-- ELSE -->{L_WARNING_EXPIRED}<!-- ENDIF --></span></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[		<td class="row1" colspan="4" align="center"><span class="gen">{L_WARNINGS_ZERO_TOTAL}</span></td>]]></find>
+        <action type="replace-with"><![CDATA[		<td class="row1" colspan="5" align="center"><span class="gen">{L_WARNINGS_ZERO_TOTAL}</span></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row3" colspan="4"><span class="gensmall">{L_DISPLAY_POSTS}:</span> {S_SELECT_SORT_DAYS}&nbsp;<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;<input class="btnlite" type="submit" value="{L_GO}" name="sort" /></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td class="row3" colspan="5"><span class="gensmall">{L_DISPLAY_POSTS}:</span> {S_SELECT_SORT_DAYS}&nbsp;<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;<input class="btnlite" type="submit" value="{L_GO}" name="sort" /></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="pagination">{PAGE_NUMBER} [ {TOTAL_USERS} ]</td>]]></find>
+        <action type="replace-with"><![CDATA[	<td class="pagination">{PAGE_NUMBER} [ {TOTAL_WARNINGS} ]</td>]]></action>
+      </edit>
+    </open>
+    <open src="styles/subsilver2/template/mcp_warn_post.html">
+      <edit>
+        <find><![CDATA[	<th align="center">{L_ADD_WARNING}</th>]]></find>
+        <action type="replace-with"><![CDATA[	<th colspan="2" align="center">{L_ADD_WARNING}</th>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row3" align="center"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td colspan="2" class="row3" align="center"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[<tr>
+	<td class="row1" align="center"><textarea name="warning" rows="10" cols="76">{L_WARNING_POST_DEFAULT}</textarea></td>
+</tr>]]></find>
+        <action type="before-add"><![CDATA[<tr>
+	<td class="row1" valign="top"><b>{L_WARNING}:</b></td>
+	<td class="row2"><select name="warntype">{S_WARN_TYPE_OPTIONS}</select></td>
+</tr>
+<tr>
+	<td class="row1" valign="top"><b>{L_WARNING_EXPIRES}:</b></td>
+	<td class="row2"><select name="warnlength">{S_WARN_END_OPTIONS}</select><br /><input type="text" name="warnlengthother" class="post" <!-- IF WARNING_END -->value="{WARNING_END}"<!-- ENDIF --> /> {L_YEAR_MONTH_DAY}</td>
+</tr>]]></action>
+        <action type="replace-with"><![CDATA[<tr>
+	<td colspan="2" class="row1" align="center"><textarea name="warning" rows="10" cols="76"><!-- IF WARNING -->{WARNING}<!-- ELSE -->{L_WARNING_POST_DEFAULT}<!-- ENDIF --></textarea></td>
+</tr>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row1" align="center"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td colspan="2" class="row1" align="center"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td colspan="2" class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /><!-- IF WARNING_ID --><input type="hidden" name="warn_id" value="{WARNING_ID}" /><!-- ENDIF --></td>]]></action>
+      </edit>
+    </open>
+    <open src="styles/subsilver2/template/mcp_warn_user.html">
+      <edit>
+        <find><![CDATA[	<th align="center">{L_ADD_WARNING}</th>]]></find>
+        <action type="replace-with"><![CDATA[	<th colspan="2" align="center">{L_ADD_WARNING}</th>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row3" align="center"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td colspan="2" class="row3" align="center"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row1" align="center"><textarea name="warning" rows="10" cols="76"></textarea></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td class="row1" valign="top"><b>{L_WARNING}:</b></td>
+	<td class="row2"><select name="warntype">{S_WARN_TYPE_OPTIONS}</select></td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="row1" align="center"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td class="row1" valign="top"><b>{L_WARNING_EXPIRES}:</b></td>
+	<td class="row2"><select name="warnlength">{S_WARN_END_OPTIONS}</select><br /><input type="text" name="warnlengthother" class="post" <!-- IF WARNING_END -->value="{WARNING_END}"<!-- ENDIF --> /> {L_YEAR_MONTH_DAY}</td>]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[	<td class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /></td>]]></find>
+        <action type="replace-with"><![CDATA[	<td colspan="2" class="row1" align="center"><textarea name="warning" rows="10" cols="76"><!-- IF WARNING -->{WARNING}<!-- ENDIF --></textarea></td>
+</tr>
+<tr>
+	<td colspan="2" class="row1" align="center"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>
+</tr>
+<tr>
+	<td colspan="2" class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /><!-- IF WARNING_ID --><input type="hidden" name="warn_id" value="{WARNING_ID}" /><!-- ENDIF --></td>]]></action>
+      </edit>
+    </open>
+    <open src="styles/subsilver2/template/memberlist_view.html">
+      <edit>
+        <find><![CDATA[	</form>]]></find>
+        <action type="before-add"><![CDATA[	<!-- IF .user -->
+		<table class="tablebg" width="100%" cellspacing="1">
+		<tr>
+			<td class="row3" colspan="6" align="center"><b class="gen">{L_WARNINGS}</b></td>
+		</tr>
+		<tr>
+			<th>&nbsp;{L_USERNAME}&nbsp;</th>
+			<th>&nbsp;{L_WARNING_TIME}&nbsp;</th>
+			<th>&nbsp;{L_WARNING_EXPIRES}&nbsp;</th>
+			<th>&nbsp;{L_REASON}&nbsp;</th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+		</tr>
+		<!-- BEGIN user -->
+			<tr>
+				<td class="row1" width="15%" valign="top"><span class="gen">{user.USERNAME_FULL}</span></td>
+				<td class="row2" width="15%" valign="top"><span class="gen">{user.WARNINGS}</span></td>
+				<td class="row1" width="15%" valign="top"><span class="gen">{user.WARNING_TIME}</span></td>
+				<td class="row1" width="25%" valign="top"><span class="gen">{user.WARNING}</span></td>
+				<td class="row2" width="10%" valign="top"><span class="gen"><!-- IF user.U_WARNING_POST_URL --><a href="{user.U_WARNING_POST_URL}">{L_WARNING_POST}</a><!-- ELSE -->&nbsp;<!-- ENDIF --></span></td>
+				<td class="row2" width="10%" valign="top"><span class="gen"><!-- IF user.WARNING_STATUS --><a href="{user.U_EDIT}">{L_EDIT_WARNING}</a><!-- ELSE -->{L_WARNING_EXPIRED}<!-- ENDIF --></span></td>
+			</tr>
+		<!-- BEGINELSE -->
+			<tr>
+				<td class="row1" colspan="6" align="center"><span class="gen">{L_WARNINGS_ZERO_TOTAL}</span></td>
+			</tr>
+		<!-- END user -->
+		</table>
+	<!-- ENDIF -->]]></action>
+      </edit>
+    </open>
+    <open src="styles/subsilver2/template/viewtopic_body.html">
+      <edit>
+        <find><![CDATA[					<!-- IF postrow.POSTER_FROM --><br /><b>{L_LOCATION}:</b> {postrow.POSTER_FROM}<!-- ENDIF -->]]></find>
+        <action type="after-add"><![CDATA[					<!-- IF postrow.POSTER_BANNED --><br /><span style="background-color: #ECD5D8;"><b>{L_BANNED}:</b> {postrow.POSTER_BAN_END}<!-- ELSEIF postrow.POSTER_WARNINGS --><br /><span style="background-color: #FFFF99;"><b>{L_WARNINGS}:</b> {postrow.POSTER_WARNINGS}</span><!-- ENDIF -->]]></action>
+      </edit>
+      <edit>
+        <find><![CDATA[					<!-- IF postrow.BUMPED_MESSAGE -->]]></find>
+        <action type="before-add"><![CDATA[					<!-- IF postrow.WARNING -->
+							<br /><br />
+							<table class="tablebg" width="100%" cellspacing="1">
+							<tr>
+								<td class="row3"><span class="gensmall"><!-- IF postrow.WARNING_TYPE eq 1 -->{L_BAN}<!-- ELSE -->{L_WARNING}<!-- ENDIF -->: {postrow.WARNING_POSTER} {postrow.WARNING_TIME}</span></td>
+							</tr>
+							<tr>
+								<td class="row2"><span class="genmed">{postrow.WARNING}</span></td>
+							</tr>
+							</table>
+					<!-- ENDIF -->
+]]></action>
+      </edit>
+    </open>
+  </action-group>
+</mod>
